@@ -1,18 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { createSlice, configureStore } from 'redux-toolkit'
+import { Provider } from 'react-redux'
+
+//action
+const counterSlice = createSlice({
+  name: 'counter', 
+  initialState: {
+    value: 0
+  },
+  reducers: {
+    increment: state => {
+      state.value += 1
+    },
+    decrement: state => {
+      state.value -= 1
+    } 
+  }    
+})
+
+export const {decrement, increment} = counterSlice.action;
+//reducer
+
+//store
+
+const store = configureStore({
+  red: counterSlice.reducer
+});
+
+
+store.subscribe(() => console.log(store.getState()))
+store.dispatch(increment)
+
+//dispatch
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
+    <h1>Hello</h1>
     <App />
-  </React.StrictMode>
+  </Provider>
 );
-
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
